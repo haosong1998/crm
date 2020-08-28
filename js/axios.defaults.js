@@ -10,7 +10,7 @@ axios.defaults.transformRequest = function(data){
     return result.substring(1);
 }
 axios.interceptors.request.use(config=>{
-    return config
+    return config;
 })
 axios.interceptors.response.use(response=>{
     return response.data;
