@@ -7,7 +7,7 @@ $(function(){
             return;
         }
         password = md5(password);
-        console.log(password)
+        // console.log(password)
         // console.log(password)
         // console.log(password)
         // console.log(account,password);
@@ -21,7 +21,7 @@ $(function(){
         // })
         // password="8376ac810bb9f231d28fcf1f"
         let res = await axios.post("/user/login",{account,password});
-        console.log(res)
+        // console.log(res)
         if(parseInt(res.code) === 0){
             alert("登录成功");
             window.location.href="index.html";
