@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 $(function(){
     let userId=null;
     // console.dir(window.location.href);
@@ -142,3 +143,7 @@ $(function(){
 
     })
 })
+=======
+
+
+>>>>>>> f51356d872c01f3257de41465dd932629295476d
