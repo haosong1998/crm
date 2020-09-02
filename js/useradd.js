@@ -1,4 +1,35 @@
 $(function(){
+    let userId=null;
+    // console.dir(window.location.href);
+    let params = window.location.href.queryURLParams();
+    // console.log(params)
+    //如果点击编辑进入此页面，在params中有id
+    //如果点击添加员工进来params没有id
+    if(params.hasOwnProperty("id")){
+        userId=params.id;
+        //根据id获取用户的信息，实现数据的回显
+        getBaseInfo();
+    }
+    async function getBaseInfo(){
+        let result = await axios.get("/user/info",{
+            params:{userId}
+        });
+        if(result.code ===0){
+            //给表单中塞如数据，实现数据的回显
+            result = result.data
+            $(".username").val(result.name);
+            //判断关于性别的单选按钮的值
+            result.sex==0?$("#man").prop("checked",true):$("#woman").prop("checked",true);
+            $(".useremail").val(result.email);
+            $(".userphone").val(result.phone);
+            $(".userdepartment").val(result.departmentId);
+            $(".userjob").val(result.jobId);
+            $(".userdesc").val(result.desc);
+            return;
+        }
+        alert("编辑部成功，可能是网络不给力......");
+        userId = null;
+    }
     //初始化部门和职位数据
     initDeptAndJob();
     async function initDeptAndJob(){
@@ -64,9 +95,11 @@ $(function(){
         $(".spanuserphone").html("");
         return true;
     }
+    //失去焦点时，对数据进行校验
     $(".username").blur(checkname);
     $(".useremail").blur(checkemail);
     $(".userphone").blur(checkphone);
+    
     
     $(".submit").click(async function(){
         if(!checkname()||!checkemail()||!checkphone()){
@@ -83,6 +116,19 @@ $(function(){
             jobId:$(".userjob").val(),
             desc:$(".userdesc").val().trim()
         };
+        //判断是编辑还是新增
+        if(userId){
+            //编辑
+            params.userId=userId;
+            let result = await axios.post("/user/update",params)
+            if(result.code ===0){
+                alert("修改数据成功");
+                window.location.href="userlist.html";
+                return;
+            }
+            alert("网络不给力，稍后再试~")
+            return;
+        }
         //实现新增
         let result = await axios.post("/user/add",params);
         if(result.code ===0){
